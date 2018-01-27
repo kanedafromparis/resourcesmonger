@@ -4,18 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.kandefromparis</groupId>
-    <artifactId>ressourcesmonger</artifactId>
+    <artifactId>resourcesmonger</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ressourcesmonger</name>
-    <description>Demo project for testing kubernetes ressources management and java</description>
+    <name>resourcesmonger</name>
+    <description>Demo project for testing kubernetes resources management and java</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <exec.mainClass>io.github.kandefromparis.ressourcesmonger.DinnerTimeServer</exec.mainClass>
+        <exec.mainClass>io.github.kandefromparis.resourcesmonger.DinnerTimeServer</exec.mainClass>
     </properties>
 
     <dependencies>

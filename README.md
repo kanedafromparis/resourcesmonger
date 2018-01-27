@@ -9,13 +9,13 @@ The purpose of this application is to show that jvm (1.8) does does take docker 
 This is a simple sever with :
 
 ````
-curl $(minikube service ressourcesmonger --url)/api/0.0.1/infos/env | jq .
+curl $(minikube service resourcesmonger --url)/api/0.0.1/infos/env | jq .
 ````
 
 to displays it's env variables
 
 ````
-curl $(minikube service ressourcesmonger --url)/api/0.0.1/kaboom/ram | jq .
+curl $(minikube service resourcesmonger --url)/api/0.0.1/kaboom/ram | jq .
 ````
 
 to make it consume RAM to the Exception java.lang.OutOfMemoryError: Java heap space, that should conduct to a crash and respawn of a pod.
@@ -35,9 +35,9 @@ spec:
       - env:
         - name: JVM_OPTIONS
           value: "-Djava.security.egd=file:/dev/./urandom -Xmx1g -XshowSettings:vm"
-        image: kanedafromparis/ressourcesmonger:0.1
+        image: kanedafromparis/resourcesmonger:0.1
         imagePullPolicy: IfNotPresent
-        name: ressourcesmonger
+        name: resourcesmonger
         resources:
           limits:
             memory: 256Mi
@@ -45,7 +45,7 @@ spec:
 ````
 
 ```
-curl $(minikube service ressourcesmonger --url)/api/0.0.1/kaboom/ram | jq . 
+curl $(minikube service resourcesmonger --url)/api/0.0.1/kaboom/ram | jq . 
 ```
 
 the pod is killed before java.lang.OutOfMemoryError.
@@ -56,21 +56,21 @@ Build
 
 ```
 mvn package && \
-  docker build -t $USER/ressourcesmonger:0.1 . -f src/main/docker/Dockerfile && \
-  kubectl run ressourcesmonger --image $USER/ressourcesmonger:0.1 --port 8080 && \
-  kubectl expose deployment ressourcesmonger --type=NodePort
+  docker build -t $USER/resourcesmonger:0.1 . -f src/main/docker/Dockerfile && \
+  kubectl run resourcesmonger --image $USER/resourcesmonger:0.1 --port 8080 && \
+  kubectl expose deployment resourcesmonger --type=NodePort
 ```
 
 Check the logs
 
 ```
-kubectl logs -f $(kubectl get pod -l run=ressourcesmonger --no-headers | cut -d " " -f 1)
+kubectl logs -f $(kubectl get pod -l run=resourcesmonger --no-headers | cut -d " " -f 1)
 ```
 
 clean 
 
 ```
-kubectl delete -l run=ressourcesmonger
+kubectl delete -l run=resourcesmonger
 ```
 
 === Todo
