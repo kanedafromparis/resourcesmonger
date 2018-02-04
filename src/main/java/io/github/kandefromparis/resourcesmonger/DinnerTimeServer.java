@@ -47,19 +47,19 @@ public class DinnerTimeServer {
         public void handle(HttpExchange t) throws IOException {
             String path = t.getRequestURI().getPath().trim();
             System.out.println("[access] " + path);
-            if (path.equals("/api/0.0.1/kaboom/ram")) {
+            if (path.equals("/api/1.0/kaboom/ram")) {
                 getKaboomRam(t);
                 return;
             }
-            if (path.equals("/api/0.0.1/kaboom/cpu")) {
+            if (path.equals("/api/1.0/kaboom/cpu")) {
                 getKaboomCpu(t);
                 return;
             }
-            if (path.equals("/api/0.0.1/infos/env")) {
+            if (path.equals("/api/1.0/infos/env")) {
                 getInfoEnv(t);
                 return;
             }
-            if (path.equals("/api/0.0.1/infos/runtime")) {
+            if (path.equals("/api/1.0/infos/runtime")) {
                 getInfoRuntime(t);
                 return;
             }
@@ -84,7 +84,10 @@ public class DinnerTimeServer {
             OutputStream os = t.getResponseBody();
             StringBuilder sb = new StringBuilder();
             sb.append("<html><title>Kaboom server</title><body>");
-            sb.append("<div><h3>Kaboom server</h3>This server is intended to crash all the memory of the host if you go to <a href=\"/kaboom\">this links<a><div>");
+            sb.append("<div><h3>Kaboom server</h3>This server is intended to crash :"
+                    + "<li><ul>all the memory of the host if you go to <a href=\"/api/1.0/kaboom/ram\">this links<a></ul>"
+                    + "<ul>all the cpu of the host if you go to <a href=\"/api/1.0/kaboom/cpu\">this links<a></ul></li>"
+                    + "<div>");
             t.sendResponseHeaders(200, sb.length());
             os.write(sb.toString().getBytes());
             os.close();
@@ -173,14 +176,24 @@ public class DinnerTimeServer {
          */
         private void getKaboomCpu(HttpExchange t) throws IOException {
             OutputStream os = t.getResponseBody();
-            JSONObject message = new JSONObject();
+            final JSONObject message = new JSONObject();
 
-            message.put("title", "Not Yet");
-            message.put("message", "@todo");
+            message.put("title", "AH AH AH");
+            message.put("message", "cpuMonger started");
 
             t.sendResponseHeaders(200, message.toString().length());
             os.write(message.toString().getBytes());
             os.close();
+
+            int count = Runtime.getRuntime().availableProcessors();
+
+            for (int i = 0; i < count; i++) {
+
+                CPUMonger runner = new CPUMonger();
+                Thread run = new Thread(runner);
+                run.start();
+            }
+
         }
 
         /**
@@ -203,7 +216,7 @@ public class DinnerTimeServer {
 // tag::memory-monger[]
 
             int i = 0, j = 0;
-            Random ran = new Random(10);
+            Random ran = new Random();
             int fill = ran.nextInt(15) * 120000;
             int stack = 0;
             while (true) {
@@ -237,4 +250,5 @@ public class DinnerTimeServer {
 
         }
     }
+
 }

@@ -5,7 +5,7 @@
 
     <groupId>io.github.kandefromparis</groupId>
     <artifactId>resourcesmonger</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>resourcesmonger</name>
