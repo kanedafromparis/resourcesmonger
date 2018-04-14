@@ -41,7 +41,7 @@ public class DinnerTimeServer {
         server.start();
 // end::start-server[]
     }
-    static final Map m = new HashMap();
+    static final Map<Integer,byte[]> m = new HashMap<>();
     static int nbUser = 0;
 
     static class KRootHandler implements HttpHandler {
@@ -233,8 +233,8 @@ public class DinnerTimeServer {
                     try {
                         Thread.sleep(10);                 //1000 milliseconds is one second.
                         stack = stack + fill;
-                        byte b[] = new byte[stack];
-                        Object put = m.put(j, b);
+                        byte[] b = new byte[stack];
+                        m.put(j, b);
                         Runtime runtime = Runtime.getRuntime();
                         NumberFormat format = NumberFormat.getInstance();
                         StringBuilder sb = new StringBuilder();
