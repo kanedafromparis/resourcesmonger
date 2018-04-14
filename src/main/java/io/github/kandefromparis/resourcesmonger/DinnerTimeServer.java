@@ -13,6 +13,9 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -94,11 +97,12 @@ public class DinnerTimeServer {
         }
 
         private void getLivenessPage(HttpExchange t) throws IOException {
+
             OutputStream os = t.getResponseBody();
             JSONObject message = new JSONObject();
             message.put("status", "ok");
             message.put("HashMapSize", m.size());
-
+            waitingloop("SLOW_LIVENESS");
             t.sendResponseHeaders(200, message.toString().length());
             os.write(message.toString().getBytes());
             os.close();
@@ -109,7 +113,7 @@ public class DinnerTimeServer {
             JSONObject message = new JSONObject();
             message.put("status", "ok");
             message.put("HashMapSize", m.size());
-
+            waitingloop("SLOW_READINESS");
             t.sendResponseHeaders(200, message.toString().length());
             os.write(message.toString().getBytes());
             os.close();
@@ -251,4 +255,32 @@ public class DinnerTimeServer {
         }
     }
 
+    public static boolean isAPositiveReasonableNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        try {
+            Integer d = Integer.parseInt(str);
+            if (d <= 1) {
+                return false;
+            }
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    public static void waitingloop(String envName) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        if (isAPositiveReasonableNumeric(System.getenv(envName))) {
+            Integer duration = Integer.parseInt(System.getenv(envName));
+            System.out.println(sdf.format(Date.from(Instant.now())) + " " + "Waiting " + duration + " micro-secondes before respond to readiness prob");
+            try {
+                Thread.sleep(duration * 100);
+            } catch (InterruptedException ex) {
+                System.err.println(ex.toString());
+            }
+
+        }
+    }
 }
