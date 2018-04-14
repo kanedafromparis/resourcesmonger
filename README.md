@@ -1,12 +1,12 @@
-= ressouresmonger
+# ressouresmonger
 
 This is a sample application used for my kubernetes introduction course
 
-== Badges
+## Badges
 [![](https://images.microbadger.com/badges/image/kanedafromparis/resourcesmonger:1.0.svg)](https://microbadger.com/images/kanedafromparis/resourcesmonger:1.0 "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/kanedafromparis/resourcesmonger:1.0.svg)](https://microbadger.com/images/kanedafromparis/resourcesmonger:1.0 "Get your own version badge on microbadger.com")
 
-== Purpose
+## Purpose
 
 The purpose of this application is to show that jvm (1.8) does does take docker (cgroups) limits in its usage of ressources.
 
@@ -54,7 +54,7 @@ curl $(minikube service resourcesmonger --url)/api/1.0/kaboom/ram | jq .
 
 the pod is killed before java.lang.OutOfMemoryError.
 
-== Usage
+## Usage
 
 Build
 
@@ -77,6 +77,6 @@ clean
 kubectl delete -l run=resourcesmonger
 ```
 
-=== Todo
+### Todo
  - Looka at the Sprind and Vertx version (maybe)
  - used the fabric8 plugin (maybe)
